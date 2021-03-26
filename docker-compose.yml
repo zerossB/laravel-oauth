@@ -1,0 +1,51 @@
+version: '3'
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: nave/oauth-laravel.client
+    ports:
+      - '8001:8000'
+    volumes:
+      - './client:/var/www/html'
+    networks:
+      - server
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: nave/oauth-laravel.server
+    ports:
+      - '8000:8000'
+    volumes:
+      - './server:/var/www/html'
+    networks:
+      - server
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: 'mysql:8.0'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'oauth-laravel'
+      MYSQL_DATABASE: 'oauth_laravel_server'
+      MYSQL_USER: 'oauth_laravel_server'
+      MYSQL_PASSWORD: 'oauth_laravel_server'
+    networks:
+      - server
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
+    volumes:
+      - "./server/scripts/mysql_initial.sql:/docker-entrypoint-initdb.d/mysql_initial.sql"
+
+networks:
+  server:
+    driver: bridge
