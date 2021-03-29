@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('', function () {
     return view('welcome');
+});
+
+Route::prefix('auth')->namespace('Auth')->group(function () {
+    Route::get('login')->name('auth.login')->uses('LoginController');
+    Route::get('callback')->name('auth.callback')->uses('CallbackController');
+    Route::get('login/form/')->name('auth.login.form')->uses('LoginFormController');
+    Route::post('callback/password/')->name('auth.callback.password')->uses('CallbackPasswordController');
 });

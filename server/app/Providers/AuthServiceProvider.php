@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Passport\Client;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
@@ -30,5 +31,6 @@ class AuthServiceProvider extends ServiceProvider
             'prefix' => 'api/oauth',
             'namespace' => '\Laravel\Passport\Http\Controllers',
         ]);
+        Passport::useClientModel(Client::class);
     }
 }
