@@ -25,7 +25,6 @@ Now we are going to create our key pair for the client.
 ```bash
 $ docker-compose exec server php artisan passport:client
 
-
  Which user ID should the client be assigned to?:
  > <press enter>
 
@@ -40,12 +39,30 @@ Client ID: <CLIENT_ID>
 Client secret: <CLIENT_SECRET>
 ```
 
-Copy the CLIENT_ID and CLIENT_SECRET and paste it into the `.env` of the client application
+Copy the CLIENT_ID and CLIENT_SECRET and paste it into the `.env` of the `client` application
 ```dosini
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=oauth_laravel_client
+DB_USERNAME=oauth_laravel_client
+DB_PASSWORD=oauth_laravel_client
+
 CLIENT_ID=<CLIENT_ID>
 CLIENT_SECRET=<CLIENT_SECRET>
 REDIRECT_URL=http://localhost:8001/auth/callback
 API_URL=http://localhost:8000/api/
+```
+
+And paste this in the `.env` on the `server`
+
+```dosini
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=oauth_laravel_server
+DB_USERNAME=oauth_laravel_server
+DB_PASSWORD=oauth_laravel_server
 ```
 
 Now open your browser and access the url [http://localhost:8001/](http://localhost:8001/) which is the client
